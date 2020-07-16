@@ -5,6 +5,7 @@
 void oqs_aes128_load_schedule_ni(const uint8_t *key, void **_schedule);
 void oqs_aes128_free_schedule_ni(void *schedule);
 void oqs_aes128_enc_sch_block_ni(const uint8_t *plaintext, const void *_schedule, uint8_t *ciphertext);
+void oqs_aes128_enc_sch_block8x_ni(const uint8_t *plaintext, const void *_schedule, uint8_t *ciphertext);
 void oqs_aes128_dec_sch_block_ni(const uint8_t *ciphertext, const void *_schedule, uint8_t *plaintext);
 void oqs_aes128_ecb_enc_sch_ni(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext);
 void oqs_aes128_ecb_dec_sch_ni(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext);
