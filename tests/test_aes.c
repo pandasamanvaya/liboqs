@@ -106,32 +106,33 @@ static int test_aes256ctr_correctness(void) {
 	return EXIT_SUCCESS;
 }
 
+#define SPEED_LEN 128
 static void speed_aes128(void) {
-	uint8_t plaintext[16], ciphertext[16];
+	uint8_t plaintext[SPEED_LEN], ciphertext[SPEED_LEN];
 	void *schedule = NULL, *schedule_dec = NULL;
 	TIME_OPERATION_SECONDS({ OQS_AES128_ECB_load_schedule(test_aes128_key, &schedule, 1); OQS_AES128_free_schedule(schedule); }, "OQS_AES128_ECB_load+free_sch", BENCH_DURATION);
 
 	OQS_AES128_ECB_load_schedule(test_aes128_key, &schedule, 1);
 	OQS_AES128_ECB_load_schedule(test_aes128_key, &schedule_dec, 0);
-	TIME_OPERATION_SECONDS(OQS_AES128_ECB_enc_sch(test_aes128_plaintext, sizeof(test_aes128_plaintext), schedule, ciphertext), "OQS_AES128_ECB_enc_sch", BENCH_DURATION);
-	TIME_OPERATION_SECONDS(OQS_AES128_ECB_dec_sch(test_aes128_ciphertext, sizeof(test_aes128_ciphertext), schedule_dec, ciphertext), "OQS_AES128_ECB_dec_sch", BENCH_DURATION);
-	TIME_OPERATION_SECONDS(OQS_AES128_ECB_enc(test_aes128_plaintext, sizeof(test_aes128_plaintext), test_aes128_key, ciphertext), "OQS_AES128_ECB_enc", BENCH_DURATION);
-	TIME_OPERATION_SECONDS(OQS_AES128_ECB_dec(test_aes128_ciphertext, sizeof(test_aes128_ciphertext), test_aes128_key, plaintext), "OQS_AES128_ECB_dec", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(OQS_AES128_ECB_enc_sch(test_aes128_plaintext, SPEED_LEN, schedule, ciphertext), "OQS_AES128_ECB_enc_sch", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(OQS_AES128_ECB_dec_sch(test_aes128_ciphertext, SPEED_LEN, schedule_dec, ciphertext), "OQS_AES128_ECB_dec_sch", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(OQS_AES128_ECB_enc(test_aes128_plaintext, SPEED_LEN, test_aes128_key, ciphertext), "OQS_AES128_ECB_enc", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(OQS_AES128_ECB_dec(test_aes128_ciphertext, SPEED_LEN, test_aes128_key, plaintext), "OQS_AES128_ECB_dec", BENCH_DURATION);
 	OQS_AES128_free_schedule(schedule);
 	OQS_AES128_free_schedule(schedule_dec);
 }
 
 static void speed_aes256(void) {
-	uint8_t plaintext[16], ciphertext[16];
+	uint8_t plaintext[SPEED_LEN], ciphertext[SPEED_LEN];
 	void *schedule = NULL, *schedule_dec = NULL;
 	TIME_OPERATION_SECONDS({ OQS_AES256_ECB_load_schedule(test_aes256_key, &schedule, 1); OQS_AES256_free_schedule(schedule); }, "OQS_AES256_ECB_load+free_sch", BENCH_DURATION);
 
 	OQS_AES256_ECB_load_schedule(test_aes256_key, &schedule, 1);
 	OQS_AES256_ECB_load_schedule(test_aes256_key, &schedule_dec, 0);
-	TIME_OPERATION_SECONDS(OQS_AES256_ECB_enc_sch(test_aes256_plaintext, sizeof(test_aes256_plaintext), schedule, ciphertext), "OQS_AES256_ECB_enc_sch", BENCH_DURATION);
-	TIME_OPERATION_SECONDS(OQS_AES256_ECB_dec_sch(test_aes256_ciphertext, sizeof(test_aes256_ciphertext), schedule_dec, ciphertext), "OQS_AES256_ECB_dec_sch", BENCH_DURATION);
-	TIME_OPERATION_SECONDS(OQS_AES256_ECB_enc(test_aes256_plaintext, sizeof(test_aes256_plaintext), test_aes256_key, ciphertext), "OQS_AES256_ECB_enc", BENCH_DURATION);
-	TIME_OPERATION_SECONDS(OQS_AES256_ECB_dec(test_aes256_ciphertext, sizeof(test_aes256_ciphertext), test_aes256_key, plaintext), "OQS_AES256_ECB_dec", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(OQS_AES256_ECB_enc_sch(test_aes256_plaintext, SPEED_LEN, schedule, ciphertext), "OQS_AES256_ECB_enc_sch", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(OQS_AES256_ECB_dec_sch(test_aes256_ciphertext, SPEED_LEN, schedule_dec, ciphertext), "OQS_AES256_ECB_dec_sch", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(OQS_AES256_ECB_enc(test_aes256_plaintext, SPEED_LEN, test_aes256_key, ciphertext), "OQS_AES256_ECB_enc", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(OQS_AES256_ECB_dec(test_aes256_ciphertext, SPEED_LEN, test_aes256_key, plaintext), "OQS_AES256_ECB_dec", BENCH_DURATION);
 	OQS_AES256_free_schedule(schedule);
 	OQS_AES256_free_schedule(schedule_dec);
 }
