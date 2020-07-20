@@ -74,8 +74,8 @@ inline void oqs_aes128_ecb_enc_sch_c(const uint8_t *plaintext, const size_t plai
 #if 1
 inline void oqs_aes128_ecb_enc_sch_ni(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext) {
 	assert(plaintext_len % 16 == 0);
-	size_t num_blocks = plaintext_len / 16;
-	size_t block;
+	long num_blocks = plaintext_len / 16;
+	long block;
 	for (block = 0; block < num_blocks - 7; block += 8) {
 		oqs_aes128_enc_sch_block8x_ni(plaintext + (16 * block), schedule, ciphertext + (16 * block));
 	}
