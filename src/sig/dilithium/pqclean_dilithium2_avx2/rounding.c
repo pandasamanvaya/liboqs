@@ -3,6 +3,16 @@
 #include "params.h"
 #include "rounding.h"
 #include "consts.h"
+#include <stdio.h>
+
+/* Displays hexadecimal strings */
+static void OQS_print_hex_string(const char *label, const uint8_t *str, size_t len) {
+	printf("%-20s (%4zu bytes):  ", label, len);
+	for (size_t i = 0; i < (len); i++) {
+		printf("%02X", str[i]);
+	}
+	printf("\n");
+}
 
 /*************************************************
 * Name:        power2round
@@ -24,6 +34,9 @@ void power2round_avx(uint32_t * restrict a1, uint32_t * restrict a0, const uint3
   const __m256i mask = _mm256_set1_epi32(-(1U << D));
   const __m256i half = _mm256_set1_epi32((1U << (D-1)) - 1);
 
+  printf("%s:%d\n", __FILE__, __LINE__);
+  OQS_print_hex_string("a", (uint8_t *) a, sizeof(uint32_t) * N);
+
   for(i = 0; i < N/8; ++i) {
     f = _mm256_load_si256((__m256i *)&a[8*i]);
     f1 = _mm256_add_epi32(f,half);
@@ -34,6 +47,8 @@ void power2round_avx(uint32_t * restrict a1, uint32_t * restrict a0, const uint3
     _mm256_store_si256((__m256i *)&a1[8*i], f1);
     _mm256_store_si256((__m256i *)&a0[8*i], f0);
   }
+  OQS_print_hex_string("a1", (uint8_t *) a1, sizeof(uint32_t) * N);
+  OQS_print_hex_string("a0", (uint8_t *) a0, sizeof(uint32_t) * N);
 }
 
 /*************************************************

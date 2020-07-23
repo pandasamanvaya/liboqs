@@ -2,6 +2,17 @@
 #include "packing.h"
 #include "polyvec.h"
 #include "poly.h"
+#include <stdio.h>
+
+/* Displays hexadecimal strings */
+static void OQS_print_hex_string(const char *label, const uint8_t *str, size_t len) {
+	printf("%-20s (%4zu bytes):  ", label, len);
+	for (size_t i = 0; i < (len); i++) {
+		printf("%02X", str[i]);
+	}
+	printf("\n");
+}
+
 
 /*************************************************
 * Name:        pack_pk
@@ -75,25 +86,31 @@ void pack_sk(uint8_t sk[CRYPTO_SECRETKEYBYTES],
   for(i = 0; i < SEEDBYTES; ++i)
     sk[i] = rho[i];
   sk += SEEDBYTES;
+  OQS_print_hex_string("rho", rho, SEEDBYTES);
 
   for(i = 0; i < SEEDBYTES; ++i)
     sk[i] = key[i];
   sk += SEEDBYTES;
+  OQS_print_hex_string("key", key, SEEDBYTES);
 
   for(i = 0; i < CRHBYTES; ++i)
     sk[i] = tr[i];
   sk += CRHBYTES;
+  OQS_print_hex_string("tr", tr, CRHBYTES);
 
   for(i = 0; i < L; ++i)
     polyeta_pack(sk + i*POLYETA_PACKEDBYTES, &s1->vec[i]);
   sk += L*POLYETA_PACKEDBYTES;
+  OQS_print_hex_string("s1", sk - L*POLYETA_PACKEDBYTES, L*POLYETA_PACKEDBYTES);
 
   for(i = 0; i < K; ++i)
     polyeta_pack(sk + i*POLYETA_PACKEDBYTES, &s2->vec[i]);
   sk += K*POLYETA_PACKEDBYTES;
+  OQS_print_hex_string("s2", sk - K*POLYETA_PACKEDBYTES, K*POLYETA_PACKEDBYTES);
 
   for(i = 0; i < K; ++i)
     polyt0_pack(sk + i*POLYT0_PACKEDBYTES, &t0->vec[i]);
+  OQS_print_hex_string("t0", sk, K*POLYETA_PACKEDBYTES);
 }
 
 /*************************************************

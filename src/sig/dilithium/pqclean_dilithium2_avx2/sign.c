@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <stdio.h>
 #include "params.h"
 #include "sign.h"
 #include "packing.h"
@@ -10,6 +11,15 @@
 #ifdef DILITHIUM_USE_AES
 #include "aes256ctr.h"
 #endif
+
+/* Displays hexadecimal strings */
+static void OQS_print_hex_string(const char *label, const uint8_t *str, size_t len) {
+	printf("%-20s (%4zu bytes):  ", label, len);
+	for (size_t i = 0; i < (len); i++) {
+		printf("%02X", str[i]);
+	}
+	printf("\n");
+}
 
 /*************************************************
 * Name:        challenge
@@ -102,6 +112,7 @@ int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
 
   /* Sample short vectors s1 and s2 */
 #ifdef DILITHIUM_USE_AES
+  printf("Inside DILITHIUM_USE_AES\n");
   __attribute__((aligned(16)))
   uint64_t nonce = 0;
   aes256ctr_ctx aesctx;
@@ -117,10 +128,12 @@ int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
     nonce++;
   }
 #elif L == 2 && K == 3
+printf("Inside L == 2 && K == 3\n");
   poly_uniform_eta_4x(&s1.vec[0], &s1.vec[1], &s2.vec[0], &s2.vec[1], rhoprime,
                       0, 1, 2, 3);
   poly_uniform_eta(&s2.vec[2], rhoprime, 4);
 #elif L == 3 && K == 4
+printf("Inside L == 3 && K == 4\n");
   poly_uniform_eta_4x(&s1.vec[0], &s1.vec[1], &s1.vec[2], &s2.vec[0], rhoprime,
                       0, 1, 2, 3);
   poly_uniform_eta_4x(&s2.vec[1], &s2.vec[2], &s2.vec[3], &t1.vec[0], rhoprime,
@@ -142,6 +155,17 @@ int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
 #error
 #endif
 
+{  uint8_t tmpoutput[L * POLYETA_PACKEDBYTES];
+  for(i = 0; i < L; ++i)
+    polyeta_pack(tmpoutput, &s1.vec[i]);
+  OQS_print_hex_string("s1", tmpoutput, L*POLYETA_PACKEDBYTES);
+}
+{  uint8_t tmpoutput[K * POLYETA_PACKEDBYTES];
+  for(i = 0; i < K; ++i)
+    polyeta_pack(tmpoutput, &s2.vec[i]);
+  OQS_print_hex_string("s2", tmpoutput, K*POLYETA_PACKEDBYTES);
+}
+
   /* Matrix-vector multiplication */
   s1hat = s1;
   polyvecl_ntt(&s1hat);
@@ -150,13 +174,38 @@ int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
     //poly_reduce(&t1.vec[i]);
     poly_invntt_tomont(&t1.vec[i]);
   }
+  {  uint8_t tmpoutput[K * POLYETA_PACKEDBYTES];
+    for(i = 0; i < K; ++i)
+      polyeta_pack(tmpoutput, &t1.vec[i]);
+    OQS_print_hex_string("t1", tmpoutput, K*POLYETA_PACKEDBYTES);
+  }
 
   /* Add error vector s2 */
   polyveck_add(&t1, &t1, &s2);
+  {  uint8_t tmpoutput[K * POLYETA_PACKEDBYTES];
+    for(i = 0; i < K; ++i)
+      polyeta_pack(tmpoutput, &t1.vec[i]);
+    OQS_print_hex_string("t1", tmpoutput, K*POLYETA_PACKEDBYTES);
+  }
 
   /* Extract t1 and write public key */
   polyveck_freeze(&t1);
+  {  uint8_t tmpoutput[K * POLYETA_PACKEDBYTES];
+    for(i = 0; i < K; ++i)
+      polyeta_pack(tmpoutput, &t1.vec[i]);
+    OQS_print_hex_string("t1", tmpoutput, K*POLYETA_PACKEDBYTES);
+  }
   polyveck_power2round(&t1, &t0, &t1);
+  {  uint8_t tmpoutput[K * POLYETA_PACKEDBYTES];
+    for(i = 0; i < K; ++i)
+      polyeta_pack(tmpoutput, &t0.vec[i]);
+    OQS_print_hex_string("t0", tmpoutput, K*POLYETA_PACKEDBYTES);
+  }
+  {  uint8_t tmpoutput[K * POLYETA_PACKEDBYTES];
+    for(i = 0; i < K; ++i)
+      polyeta_pack(tmpoutput, &t1.vec[i]);
+    OQS_print_hex_string("t1", tmpoutput, K*POLYETA_PACKEDBYTES);
+  }
   pack_pk(pk, rho, &t1);
 
   /* Compute CRH(rho, t1) and write secret key */
