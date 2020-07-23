@@ -34,13 +34,21 @@ void power2round_avx(uint32_t * restrict a1, uint32_t * restrict a0, const uint3
   const __m256i mask = _mm256_set1_epi32(-(1U << D));
   const __m256i half = _mm256_set1_epi32((1U << (D-1)) - 1);
 
-  printf("%s:%d\n", __FILE__, __LINE__);
   OQS_print_hex_string("a", (uint8_t *) a, sizeof(uint32_t) * N);
+  OQS_print_hex_string("q", (uint8_t *) &q, sizeof(__m256i));
+  OQS_print_hex_string("mask", (uint8_t *) &mask, sizeof(__m256i));
+  OQS_print_hex_string("half", (uint8_t *) &half, sizeof(__m256i));
 
   for(i = 0; i < N/8; ++i) {
     f = _mm256_load_si256((__m256i *)&a[8*i]);
     f1 = _mm256_add_epi32(f,half);
     f0 = _mm256_and_si256(f1,mask);
+    /* If I uncomment the following three lines, suddenly (at least on my Mac) 
+     * Dilithium under gcc-8 starts producing correct output!!
+     */ 
+    // OQS_print_hex_string("f", (uint8_t *) &f, sizeof(__m256i));
+    // OQS_print_hex_string("f1", (uint8_t *) &f1, sizeof(__m256i));
+    // OQS_print_hex_string("f0", (uint8_t *) &f0, sizeof(__m256i));
     f1 = _mm256_srli_epi32(f1,D);
     f = _mm256_add_epi32(f,q);
     f0 = _mm256_sub_epi32(f,f0);
