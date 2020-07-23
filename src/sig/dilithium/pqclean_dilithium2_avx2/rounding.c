@@ -26,7 +26,29 @@ static void OQS_print_hex_string(const char *label, const uint8_t *str, size_t l
 *              - const uint32_t *a: input array of length N
 *
 **************************************************/
+// copied from pqclean_dilithium2_clean/rounding.c
+static uint32_t power2round(uint32_t a, uint32_t *a0)  {
+  int32_t t;
+
+  /* Centralized remainder mod 2^D */
+  t = a & ((1U << D) - 1);
+  t -= (1U << (D-1)) + 1;
+  t += (t >> 31) & (1U << D);
+  t -= (1U << (D-1)) - 1;
+  *a0 = Q + t;
+  a = (a - t) >> D;
+  return a;
+}
+
 void power2round_avx(uint32_t * restrict a1, uint32_t * restrict a0, const uint32_t * restrict a)
+{
+  for (size_t i = 0; i < N; i++) {
+    a1[i] = power2round(a[i], &a0[i]);
+  }
+}
+
+
+void power2round_avx_bad(uint32_t * restrict a1, uint32_t * restrict a0, const uint32_t * restrict a)
 {
   unsigned int i;
   __m256i f,f0,f1;
