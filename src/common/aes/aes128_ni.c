@@ -137,17 +137,86 @@ void oqs_aes128_enc_sch_block8x_ni(const uint8_t *plaintext, const void *_schedu
 	__m128i temp6 = _mm_xor_si128(nv6, rkeys[0]);
 	__m128i temp7 = _mm_xor_si128(nv7, rkeys[0]);
 
-#pragma unroll(9)
-	for (int i = 1 ; i < 10 ; i++) {
-		temp0 = _mm_aesenc_si128(temp0, rkeys[i]);
-		temp1 = _mm_aesenc_si128(temp1, rkeys[i]);
-		temp2 = _mm_aesenc_si128(temp2, rkeys[i]);
-		temp3 = _mm_aesenc_si128(temp3, rkeys[i]);
-		temp4 = _mm_aesenc_si128(temp4, rkeys[i]);
-		temp5 = _mm_aesenc_si128(temp5, rkeys[i]);
-		temp6 = _mm_aesenc_si128(temp6, rkeys[i]);
-		temp7 = _mm_aesenc_si128(temp7, rkeys[i]);
-	}
+	temp0 = _mm_aesenc_si128(temp0, rkeys[1]);
+	temp1 = _mm_aesenc_si128(temp1, rkeys[1]);
+	temp2 = _mm_aesenc_si128(temp2, rkeys[1]);
+	temp3 = _mm_aesenc_si128(temp3, rkeys[1]);
+	temp4 = _mm_aesenc_si128(temp4, rkeys[1]);
+	temp5 = _mm_aesenc_si128(temp5, rkeys[1]);
+	temp6 = _mm_aesenc_si128(temp6, rkeys[1]);
+	temp7 = _mm_aesenc_si128(temp7, rkeys[1]);
+
+	temp0 = _mm_aesenc_si128(temp0, rkeys[2]);
+	temp1 = _mm_aesenc_si128(temp1, rkeys[2]);
+	temp2 = _mm_aesenc_si128(temp2, rkeys[2]);
+	temp3 = _mm_aesenc_si128(temp3, rkeys[2]);
+	temp4 = _mm_aesenc_si128(temp4, rkeys[2]);
+	temp5 = _mm_aesenc_si128(temp5, rkeys[2]);
+	temp6 = _mm_aesenc_si128(temp6, rkeys[2]);
+	temp7 = _mm_aesenc_si128(temp7, rkeys[2]);
+
+	temp0 = _mm_aesenc_si128(temp0, rkeys[3]);
+	temp1 = _mm_aesenc_si128(temp1, rkeys[3]);
+	temp2 = _mm_aesenc_si128(temp2, rkeys[3]);
+	temp3 = _mm_aesenc_si128(temp3, rkeys[3]);
+	temp4 = _mm_aesenc_si128(temp4, rkeys[3]);
+	temp5 = _mm_aesenc_si128(temp5, rkeys[3]);
+	temp6 = _mm_aesenc_si128(temp6, rkeys[3]);
+	temp7 = _mm_aesenc_si128(temp7, rkeys[3]);
+
+	temp0 = _mm_aesenc_si128(temp0, rkeys[4]);
+	temp1 = _mm_aesenc_si128(temp1, rkeys[4]);
+	temp2 = _mm_aesenc_si128(temp2, rkeys[4]);
+	temp3 = _mm_aesenc_si128(temp3, rkeys[4]);
+	temp4 = _mm_aesenc_si128(temp4, rkeys[4]);
+	temp5 = _mm_aesenc_si128(temp5, rkeys[4]);
+	temp6 = _mm_aesenc_si128(temp6, rkeys[4]);
+	temp7 = _mm_aesenc_si128(temp7, rkeys[4]);
+
+	temp0 = _mm_aesenc_si128(temp0, rkeys[5]);
+	temp1 = _mm_aesenc_si128(temp1, rkeys[5]);
+	temp2 = _mm_aesenc_si128(temp2, rkeys[5]);
+	temp3 = _mm_aesenc_si128(temp3, rkeys[5]);
+	temp4 = _mm_aesenc_si128(temp4, rkeys[5]);
+	temp5 = _mm_aesenc_si128(temp5, rkeys[5]);
+	temp6 = _mm_aesenc_si128(temp6, rkeys[5]);
+	temp7 = _mm_aesenc_si128(temp7, rkeys[5]);
+
+	temp0 = _mm_aesenc_si128(temp0, rkeys[6]);
+	temp1 = _mm_aesenc_si128(temp1, rkeys[6]);
+	temp2 = _mm_aesenc_si128(temp2, rkeys[6]);
+	temp3 = _mm_aesenc_si128(temp3, rkeys[6]);
+	temp4 = _mm_aesenc_si128(temp4, rkeys[6]);
+	temp5 = _mm_aesenc_si128(temp5, rkeys[6]);
+	temp6 = _mm_aesenc_si128(temp6, rkeys[6]);
+	temp7 = _mm_aesenc_si128(temp7, rkeys[6]);
+
+	temp0 = _mm_aesenc_si128(temp0, rkeys[7]);
+	temp1 = _mm_aesenc_si128(temp1, rkeys[7]);
+	temp2 = _mm_aesenc_si128(temp2, rkeys[7]);
+	temp3 = _mm_aesenc_si128(temp3, rkeys[7]);
+	temp4 = _mm_aesenc_si128(temp4, rkeys[7]);
+	temp5 = _mm_aesenc_si128(temp5, rkeys[7]);
+	temp6 = _mm_aesenc_si128(temp6, rkeys[7]);
+	temp7 = _mm_aesenc_si128(temp7, rkeys[7]);
+
+	temp0 = _mm_aesenc_si128(temp0, rkeys[8]);
+	temp1 = _mm_aesenc_si128(temp1, rkeys[8]);
+	temp2 = _mm_aesenc_si128(temp2, rkeys[8]);
+	temp3 = _mm_aesenc_si128(temp3, rkeys[8]);
+	temp4 = _mm_aesenc_si128(temp4, rkeys[8]);
+	temp5 = _mm_aesenc_si128(temp5, rkeys[8]);
+	temp6 = _mm_aesenc_si128(temp6, rkeys[8]);
+	temp7 = _mm_aesenc_si128(temp7, rkeys[8]);
+
+	temp0 = _mm_aesenc_si128(temp0, rkeys[9]);
+	temp1 = _mm_aesenc_si128(temp1, rkeys[9]);
+	temp2 = _mm_aesenc_si128(temp2, rkeys[9]);
+	temp3 = _mm_aesenc_si128(temp3, rkeys[9]);
+	temp4 = _mm_aesenc_si128(temp4, rkeys[9]);
+	temp5 = _mm_aesenc_si128(temp5, rkeys[9]);
+	temp6 = _mm_aesenc_si128(temp6, rkeys[9]);
+	temp7 = _mm_aesenc_si128(temp7, rkeys[9]);
 
 	temp0 = _mm_aesenclast_si128(temp0, rkeys[10]);
 	temp1 = _mm_aesenclast_si128(temp1, rkeys[10]);
