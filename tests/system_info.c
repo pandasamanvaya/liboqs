@@ -88,7 +88,7 @@ static void print_cpu_extensions(void) {
 }
 
 static void print_oqs_configuration(void) {
-	printf("OQS version:      %s\n", OQS_VERSION_TEXT);
+	printf("OQS version:      %s\n", OQS_VERSION);
 #if defined(OQS_COMPILE_GIT_COMMIT)
 	printf("Git commit:       %s\n", OQS_COMPILE_GIT_COMMIT);
 #endif
